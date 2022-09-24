@@ -1,23 +1,22 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
-
 const Weather = () => {
-    const [data, setData] = useState([])
+    const [alldata, setallData] = useState([])
     const [searchTerm, setSearchTerm] = useState("pune")
     var longitude;
     var latitude;
     // const key = "4b662484c866d9490cda4b971b86dea4"
 
     const getWeatherData = async (searchTerm) => {
-
         try {
             let wedata = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${searchTerm}&units=metric&exclude=hourly,minutely&appid=2935c91cbd3fb88da8e19646f93fbbbd`)
             let data = await wedata.json();
             longitude = data.coord.lon
             latitude = data.coord.lat
             weekly(longitude, latitude)
-            console.log(data)
-            console.log(longitude, latitude)
+            // setallData(data)
+            // console.log(data)
+            // console.log(longitude, latitude)
         }
         catch (err) {
             console.log("error:", err);
@@ -34,7 +33,6 @@ const Weather = () => {
             fetch(`https://api.openweathermap.org/data/2.5/weather?q=${searchTerm}&units=metric&exclude=hourly,minutely&appid=2935c91cbd3fb88da8e19646f93fbbbd`)
                 .then((res) => res.json())
                 .then((data) => {
-                    setData(data)
                     console.log(data)
                     getWeatherData(searchTerm)
                 })
@@ -46,15 +44,16 @@ const Weather = () => {
         setSearchTerm(e.target.value);
     }
 
-    async function weekly() {
+    async function weekly(longitude, latitude) {
         try {
             let res = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&appid=2935c91cbd3fb88da8e19646f93fbbbd`);
             let data = await res.json()
-            console.log('data: ', data);
+            console.log('data: ', data.daily);
+            data = data.daily
+            setallData(data)
         }
         catch (err) {
             console.log(' error  : ', err);
-
         }
     }
 
@@ -66,6 +65,13 @@ const Weather = () => {
                 <input type="search" className="search" placeholder="search" value={searchTerm}
                     onChange={handleOnChange} />
             </form>
+            <div>
+                {
+                    alldata?.map((e) => {
+                        return <div>{e.temp.max}</div>
+                    })
+                }
+            </div>
         </div>
     )
 }
