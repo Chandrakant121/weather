@@ -1,77 +1,59 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
 const Weather = () => {
-    const [alldata, setallData] = useState([])
-    const [searchTerm, setSearchTerm] = useState("pune")
-    var longitude;
-    var latitude;
+    const [search, setSearch] = useState("pune");
+    const [latitude, setLat] = useState([]);
+    const [longitude, setLong] = useState([]);
+    const [current, setCurrent] = useState("");
+    const [city, setCity] = useState("");
+    const [hourly, setHourly] = useState("");
+    const [daily, setDaily] = useState("");
+    const [data, setData] = useState(null);
+
     // const key = "4b662484c866d9490cda4b971b86dea4"
 
-    const getWeatherData = async (searchTerm) => {
-        try {
-            let wedata = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${searchTerm}&units=metric&exclude=hourly,minutely&appid=2935c91cbd3fb88da8e19646f93fbbbd`)
-            let data = await wedata.json();
-            longitude = data.coord.lon
-            latitude = data.coord.lat
-            weekly(longitude, latitude)
-            // setallData(data)
-            // console.log(data)
-            // console.log(longitude, latitude)
-        }
-        catch (err) {
-            console.log("error:", err);
-        }
-    }
 
     useEffect(() => {
-        getWeatherData(searchTerm)
-    }, [longitude, latitude])
+        navigator.geolocation.getCurrentPosition(function (position) {
+            setLat(position.coords.latitude);
+            setLong(position.coords.longitude);
+        });
 
-    const handleOnsubmit = (e) => {
-        e.preventDefault();
-        if (searchTerm) {
-            fetch(`https://api.openweathermap.org/data/2.5/weather?q=${searchTerm}&units=metric&exclude=hourly,minutely&appid=2935c91cbd3fb88da8e19646f93fbbbd`)
-                .then((res) => res.json())
-                .then((data) => {
-                    console.log(data)
-                    getWeatherData(searchTerm)
-                })
-            setSearchTerm("")
-        }
-    }
+        console.log("Latitude is:", latitude)
+        console.log("Longitude is:", longitude)
+    }, [latitude, longitude]);
 
-    const handleOnChange = (e) => {
-        setSearchTerm(e.target.value);
-    }
+    useEffect(() => {
+        const fetchApi = async () => {
+            const API_KEY = "2935c91cbd3fb88da8e19646f93fbbbd";
+            const uri = `http://api.positionstack.com/v1/forward?access_key=fab80d93ef21989e45e301fbf8f51ca2&query=${search}`;
+            const res = await fetch(uri);
+            const alldata = await res.json()
 
-    async function weekly(longitude, latitude) {
-        try {
-            let res = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&appid=2935c91cbd3fb88da8e19646f93fbbbd`);
-            let data = await res.json()
-            console.log('data: ', data.daily);
-            data = data.daily
-            setallData(data)
-        }
-        catch (err) {
-            console.log(' error  : ', err);
-        }
-    }
+            if (alldata?.data && alldata.data.length > 0) {
+                const { latitude = 0, longitude, name = "no data" } = alldata?.data[0];
+                setCity(name);
+                const uri = `https://api.openweathermap.org/data/2.5/onecall?units=metric&lat=${latitude}&lon=${longitude}&exclude=minutely,alerts&appid=${API_KEY}`;
+                const weatherres = await fetch(uri);
+                const data = await weatherres.json();
+                console.log(data)
+                setData(data);
+                setCurrent(data.current);
+                setHourly(data.hourly);
+                setDaily(data.daily);
+            } else {
+                setData(false);
+            }
+        };
+        fetchApi();
+    }, [search]);
+
 
 
     return (
 
         <div>
-            <form onSubmit={handleOnsubmit}>
-                <input type="search" className="search" placeholder="search" value={searchTerm}
-                    onChange={handleOnChange} />
-            </form>
-            <div>
-                {
-                    alldata?.map((e) => {
-                        return <div>{e.temp.max}</div>
-                    })
-                }
-            </div>
+           
         </div>
     )
 }
