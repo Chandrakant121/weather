@@ -16,7 +16,7 @@ const Weather = () => {
     const [city, setCity] = useState("");
     const [hourly, setHourly] = useState("");
     const [daily, setDaily] = useState("");
-    const [data, setData] = useState(null);
+    const [data, setData] = useState([]);
     const [pressure, setPressure] = useState("");
     const [humidity, setHumidity] = useState("");
     const [sunset, setSunset] = useState("");
@@ -39,8 +39,6 @@ const Weather = () => {
             // const key = "4b662484c866d9490cda4b971b86dea4" 
             const API_KEY = "4b662484c866d9490cda4b971b86dea4";
             const olduri = `http://api.positionstack.com/v1/forward?access_key=fab80d93ef21989e45e301fbf8f51ca2&query=${search}`;
-
-
             const res = await fetch(olduri);
             const alldata = await res.json()
 
@@ -51,9 +49,9 @@ const Weather = () => {
                 const weatherres = await fetch(uri);
                 const data = await weatherres.json();
 
-                console.log(data)
-                setData(data);
-                // const { daily, hourly, current } = data;
+                console.log(data.hourly[0].temp)
+                setData(data.daily);
+                // setHourly(data.hourly.temp)
                 setCurrent(data.current);
                 setHourly(data.hourly);
                 setDaily(data.daily);
@@ -62,7 +60,7 @@ const Weather = () => {
                 setSunrise(data.current.sunrise)
                 setSunset(data.current.sunset)
             } else {
-                setData(false);
+                setData([...data]);
             }
         };
         fetchApi();
@@ -98,7 +96,6 @@ const Weather = () => {
                         <FaLocationArrow style={{ margin: 10 }} />
                         <div className="input">
                             <input
-
                                 type="Search"
                                 value={search}
                                 placeholder="Enter name of city"
@@ -108,47 +105,37 @@ const Weather = () => {
                         </div>
                         <FaSearch style={{ margin: 10 }} />
                     </div>
-                    {
-                        !data ?
-                            <>
-                                <h2>Loading</h2>
-                                <img src="https://www.freeiconspng.com/thumbs/weather-icon-png/weather-icon-png-8.png" alt="" />
-                            </>
 
-                            :
-                            (
-                                <>
-                                    <div className="daily">
-                                        <ol>
-                                            {
-                                                data.daily.slice(1).map((y, key) => (
-                                                    <div className="card" key={key}>
-                                                        <div>
-                                                            {dayOfWeek(key)}
-                                                        </div>
+                    <div className="daily">
+                        <ol>
+                            {
+                                data.map((y, key) => (
+                                    <div className="card" key={key}>
+                                        <div>
+                                            {dayOfWeek(key)}
+                                        </div>
 
-                                                        {y.temp.day}°
-                                                        <span className="celcius">C</span> <br />
-                                                        <img src={setimg(y.weather[0].main)} alt="" />
-                                                        {y.weather[0].main}
-                                                    </div>
-                                                ))}
-                                        </ol>
+                                        {y.temp.day}°
+                                        <span className="celcius">C</span> <br />
+                                        <img src={setimg(y.weather[0].main)} alt="" />
+                                        {y.weather[0].main}
                                     </div>
+                                ))}
+                        </ol>
+                    </div>
 
-                                    <CurrentTemp temp={current.temp} />
-                                    {/* Add bar chart herer */}
+                    <CurrentTemp temp={current.temp} />
+                    {/* Add bar chart herer */}
 
-                                    {/* Hour data */}
-                                    <Hourdata data={data} />
-                                    {/* Pressure and Humidity */}
-                                    <Pressure pressure={pressure} humidity={humidity} />
-                                    {/* sunrise and sunset */}
-                                    <RiseSet sunrise={sunrise} sunset={sunset} />
-                                    {/* Added Img  */}
-                                    <SunImg />
-                                </>
-                            )}
+                    {/* Hour data */}
+                    {/* <Hourdata data={hourly} /> */}
+                    {/* Pressure and Humidity */}
+                    <Pressure pressure={pressure} humidity={humidity} />
+                    {/* sunrise and sunset */}
+                    <RiseSet sunrise={sunrise} sunset={sunset} />
+                    {/* Added Img  */}
+                    <SunImg />
+
 
                 </div>
             </div>

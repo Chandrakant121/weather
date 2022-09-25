@@ -2,6 +2,7 @@ import React from 'react'
 
 
 const Hourdata = ({ data }) => {
+    // console.log(data)
 
     let settimes = function (timeNum) {
         var hour = new Array(47);
@@ -43,15 +44,16 @@ const Hourdata = ({ data }) => {
 
     return (
         <div> <div className="hourly">
-            <ol>
-                {data.hourly.map((x, key) => (
-                    <div className="card" key={key}>
 
-                        <b>{Math.ceil(x.temp)}°<span className="celcius">C</span></b>
-                        <br />
-                        {settimes(key)}
-                    </div>
-                ))}
+            <ol>
+                {
+                    data.slice[0].map((x, key) => (
+                        <div className="card" key={key}>
+                            <b>{Math.ceil(x.temp)}°<span className="celcius">C</span></b>
+                            <br />
+                            {settimes(key)}
+                        </div>
+                    ))}
             </ol>
         </div></div>
     )
