@@ -28,15 +28,12 @@ input[type="search"]::-webkit-search-results-decoration {
 
 
 .box {
-    background-size: 100% 100%;
     display: inline-block;
     width: 80%;
-    height: 520px;
-    padding: 20px 10px;
+    padding: 20px;
     margin: auto;
     border-radius: 4px;
     box-shadow: 0 3px 6px 0 #555;
-    font-family: Montserrat;
 
 }
 
@@ -44,14 +41,24 @@ input[type="search"]::-webkit-search-results-decoration {
     display: flex;
     flex-direction: row;
     justify-content: center;
+    flex-wrap: wrap;
+
 }
 
 .card {
-    display: inline-block;
-    margin: 5px;
+    /* display: inline-block; */
+    margin: 6px;
     padding: 8px;
-    border: 1px solid black;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    padding: 15px;
+    text-align: center;
+    border: 2px solid black;
     border-radius: 5px;
+}
+
+.card:hover {
+    border: 2px solid rgb(47, 191, 231);
 }
 
 
@@ -144,6 +151,7 @@ ol {
     flex-wrap: wrap;
     margin-top: 20px;
     /* border: 1px solid black; */
+
 }
 
 .boxboreder {
@@ -152,4 +160,6 @@ ol {
     width: 100px;
     text-align: center;
     background-color: rgb(183, 225, 211);
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    cursor: pointer;
 }

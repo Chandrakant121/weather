@@ -61,6 +61,21 @@ const Weather = () => {
         fetchApi();
     }, [search]);
 
+    // img changes according to weather condition
+
+    function setimg(day) {
+        var src
+        if (day == "Rain") {
+            src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiGZKEkpEVGF12T-0j_Y808gG-HORK2ME_gA&usqp=CAU"
+        }
+        else if (day == "Clouds") {
+            src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4JFYacuTD29Lx--J3gOu-D4hfW1fdVBjqW-IXqaKGObHYXBjp1ZrUZmNHa2PXmmhYGbE&usqp=CAU"
+        }
+        else if (day == "Clear") {
+            src = "https://www.freeiconspng.com/thumbs/weather-icon-png/weather-icon-png-8.png"
+        }
+        return src
+    }
 
 
     return (
@@ -93,7 +108,10 @@ const Weather = () => {
                                                     </div>
                                                     {y.temp.day}°
                                                     <span className="celcius">C</span> <br />
-                                                    <img src="https://www.freeiconspng.com/thumbs/weather-icon-png/weather-icon-png-8.png" alt="" />
+
+                                                    {/* <img src="https://www.freeiconspng.com/thumbs/weather-icon-png/weather-icon-png-8.png" alt="" /> */}
+                                                    <img src={setimg(y.weather[0].main)} alt="" />
+                                                    {y.weather[0].main}
                                                 </div>
                                             ))}
                                     </ol>
@@ -114,9 +132,9 @@ const Weather = () => {
                                     <ol>
                                         {data.hourly.map((x, key) => (
                                             <div className="card">
-                                                {settimes(key)}
+                                                <b>{x.temp}°<span className="celcius">C</span></b>
                                                 <br />
-                                                {x.temp}°<span className="celcius">C</span>
+                                                {settimes(key)}
                                             </div>
                                         ))}
                                     </ol>
