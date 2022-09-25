@@ -14,7 +14,7 @@ const Weather = () => {
     const [pressure, setPressure] = useState("");
     const [humidity, setHumidity] = useState("");
     const [sunset, setSunset] = useState("");
-    const [sunise, setSunrise] = useState("");
+    const [sunrise, setSunrise] = useState("");
 
 
     // location 
@@ -78,6 +78,20 @@ const Weather = () => {
     }
 
 
+    function sunsetrise(unix_timestamp) {
+        var date = new Date(unix_timestamp * 1000);
+        // Hours part from the timestamp
+        var hours = date.getHours();
+        // Minutes part from the timestamp
+        var minutes = "0" + date.getMinutes();
+        // Seconds part from the timestamp
+        // var seconds = "0" + date.getSeconds();
+        // Will display time in 10:30:23 format
+        var formattedTime = hours + ':' + minutes.substr(-2)
+        return formattedTime
+    }
+
+
     return (
         <div >
             <div className="mainConatainer">
@@ -119,7 +133,7 @@ const Weather = () => {
 
 
                                 <div className="info">
-                                    <h2 className="temp">{current?.temp}°C</h2>
+                                    <h2 className="temp">{Math.ceil(current?.temp)}°C</h2>
                                     <img src="https://www.pngmart.com/files/20/Summer-Sun-PNG.png" alt="" />
                                 </div>
 
@@ -132,7 +146,7 @@ const Weather = () => {
                                     <ol>
                                         {data.hourly.map((x, key) => (
                                             <div className="card">
-                                                <b>{x.temp}°<span className="celcius">C</span></b>
+                                                <b>{Math.ceil(x.temp)}°<span className="celcius">C</span></b>
                                                 <br />
                                                 {settimes(key)}
                                             </div>
@@ -154,6 +168,28 @@ const Weather = () => {
                                 </div>
 
                                 {/* sunrise and sunset */}
+
+                                <div>
+                                    <div className='rise_set'>
+                                        <div>
+                                            <b>Sunrise</b>
+                                            <div>{sunsetrise(sunrise)}{" "}am</div>
+                                        </div>
+                                        <div>
+                                            <b>Sunset</b>
+                                            <div>{sunsetrise(sunset)}{" "}pm</div>
+                                        </div>
+                                    </div>
+
+                                    <div className='rise_set_img'>
+                                        <img src="https://static.vecteezy.com/system/resources/thumbnails/006/923/031/small/day-cycle-line-icon-sun-position-changing-movement-path-sun-clock-with-the-time-of-day-natural-phenomenon-sunshine-sunrise-sunset-illustration-vector.jpg" alt="" />
+                                    </div>
+                                    <div className='imgtime'>
+                                        <div>6{" "}am</div>
+                                        <div>1{" "}pm</div>
+                                        <div>8{" "}pm</div>
+                                    </div>
+                                </div>
 
                             </>
                         )}

@@ -163,3 +163,28 @@ ol {
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     cursor: pointer;
 }
+
+.rise_set {
+    display: flex;
+    justify-content: space-between;
+    margin: 30px;
+    /* box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
+}
+
+.rise_set>div {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    width: 100px;
+    text-align: center;
+    padding: 12px;
+}
+
+.rise_set_img>img {
+    width: 100%;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.imgtime {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+}
