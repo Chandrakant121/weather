@@ -1,0 +1,155 @@
+.mainConatainer {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    width: 600px;
+    margin: auto;
+    margin-top: 10px;
+}
+
+input[type=text]::-ms-clear {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+input[type=text]::-ms-reveal {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+    display: none;
+}
+
+
+.box {
+    background-size: 100% 100%;
+    display: inline-block;
+    width: 80%;
+    height: 520px;
+    padding: 20px 10px;
+    margin: auto;
+    border-radius: 4px;
+    box-shadow: 0 3px 6px 0 #555;
+    font-family: Montserrat;
+
+}
+
+.input_search {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.card {
+    display: inline-block;
+    margin: 5px;
+    padding: 8px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+
+
+.InfoName {
+    /* color:black; */
+    font-size: 2rem;
+    margin-bottom: 2px;
+
+}
+
+input {
+    border: 1px solid black;
+    text-align: center;
+    height: 40px;
+    width: 400px;
+}
+
+
+.Location {
+    margin-left: 5px;
+}
+
+input[type="search"] {
+    display: flex;
+    margin: 0 auto;
+    background-image: none;
+    margin-bottom: 2px;
+    justify-content: center;
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 15x;
+}
+
+.temp {
+    font-size: 40px;
+    overflow-wrap: break-word;
+    margin-bottom: 1px;
+}
+
+.info {
+    display: flex;
+    justify-content: space-around;
+}
+
+.info>img {
+    width: 50px;
+    margin-top: 30px;
+    height: 50px;
+}
+
+
+.celcius {
+    font-size: 12px;
+}
+
+.hourly {
+    width: 480px;
+    display: inline-block;
+    margin: auto;
+    font-family: Montserrat;
+}
+
+ol {
+    display: flex;
+    flex-direction: row;
+    overflow-x: scroll;
+}
+
+
+.daily {
+    display: inline-block;
+    width: 100%;
+    margin-top: 15px;
+    border-radius: 4px;
+    font-family: Montserrat;
+}
+
+.card>img {
+    width: 50px;
+}
+
+.p_and_h {
+    justify-content: space-around;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    /* border: 1px solid black; */
+}
+
+.boxboreder {
+    border: 1px solid black;
+    padding: 10px;
+    width: 100px;
+    text-align: center;
+    background-color: rgb(183, 225, 211);
+}

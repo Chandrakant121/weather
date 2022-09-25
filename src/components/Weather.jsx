@@ -1,5 +1,7 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
+import "./Style.css";
+
 const Weather = () => {
     const [search, setSearch] = useState("pune");
     const [latitude, setLat] = useState([]);
@@ -9,24 +11,30 @@ const Weather = () => {
     const [hourly, setHourly] = useState("");
     const [daily, setDaily] = useState("");
     const [data, setData] = useState(null);
+    const [pressure, setPressure] = useState("");
+    const [humidity, setHumidity] = useState("");
+    const [sunset, setSunset] = useState("");
+    const [sunise, setSunrise] = useState("");
 
-    // const key = "4b662484c866d9490cda4b971b86dea4"
 
-
+    // location 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(function (position) {
             setLat(position.coords.latitude);
             setLong(position.coords.longitude);
         });
-
-        console.log("Latitude is:", latitude)
-        console.log("Longitude is:", longitude)
+        // console.log("Latitude is:", latitude)
+        // console.log("Longitude is:", longitude)
     }, [latitude, longitude]);
+
 
     useEffect(() => {
         const fetchApi = async () => {
+            // const key = "4b662484c866d9490cda4b971b86dea4" 
             const API_KEY = "2935c91cbd3fb88da8e19646f93fbbbd";
             const uri = `http://api.positionstack.com/v1/forward?access_key=fab80d93ef21989e45e301fbf8f51ca2&query=${search}`;
+
+
             const res = await fetch(uri);
             const alldata = await res.json()
 
@@ -36,11 +44,16 @@ const Weather = () => {
                 const uri = `https://api.openweathermap.org/data/2.5/onecall?units=metric&lat=${latitude}&lon=${longitude}&exclude=minutely,alerts&appid=${API_KEY}`;
                 const weatherres = await fetch(uri);
                 const data = await weatherres.json();
+
                 console.log(data)
                 setData(data);
                 setCurrent(data.current);
                 setHourly(data.hourly);
                 setDaily(data.daily);
+                setHumidity(data.current.humidity)
+                setPressure(data.current.pressure)
+                setSunrise(data.current.sunrise)
+                setSunset(data.current.sunset)
             } else {
                 setData(false);
             }
@@ -51,11 +64,135 @@ const Weather = () => {
 
 
     return (
+        <div >
+            <div className="mainConatainer">
+                <div />
+                <div className="box">
+                    {/* Search bar */}
+                    <div className="input_search">
+                        <div className="input">
+                            <input
+                                type="Search"
+                                value={search}
+                                placeholder="Enter name of city"
+                                onChange={(e) => {
+                                    setSearch(e.target.value);
+                                }} />
+                        </div>
+                    </div>
+                    {
+                        !data ? (<><h2>Loading</h2> <img src="https://www.freeiconspng.com/thumbs/weather-icon-png/weather-icon-png-8.png" alt="" /></>) : (
+                            <>
+                                <div className="daily">
+                                    <ol>
+                                        {
+                                            data.daily.slice(1).map((y, key) => (
+                                                <div className="card">
+                                                    <div>
+                                                        {dayOfWeek(key)}
+                                                    </div>
+                                                    {y.temp.day}°
+                                                    <span className="celcius">C</span> <br />
+                                                    <img src="https://www.freeiconspng.com/thumbs/weather-icon-png/weather-icon-png-8.png" alt="" />
+                                                </div>
+                                            ))}
+                                    </ol>
+                                </div>
 
-        <div>
-           
-        </div>
+
+                                <div className="info">
+                                    <h2 className="temp">{current?.temp}°C</h2>
+                                    <img src="https://www.pngmart.com/files/20/Summer-Sun-PNG.png" alt="" />
+                                </div>
+
+
+                                {/* Add bar chart herer */}
+
+
+
+                                <div className="hourly">
+                                    <ol>
+                                        {data.hourly.map((x, key) => (
+                                            <div className="card">
+                                                {settimes(key)}
+                                                <br />
+                                                {x.temp}°<span className="celcius">C</span>
+                                            </div>
+                                        ))}
+                                    </ol>
+                                </div>
+
+
+                                {/* Pressure and Humidity */}
+                                <div className='p_and_h'>
+                                    <div className='boxboreder'>
+                                        <b>Pressure</b>
+                                        <div> {pressure}{" "}hpa</div>
+                                    </div>
+                                    <div className='boxboreder'>
+                                        <b>Humidity</b>
+                                        <div> {humidity}{" "}%</div>
+                                    </div>
+                                </div>
+
+                                {/* sunrise and sunset */}
+
+                            </>
+                        )}
+
+                </div>
+            </div>
+
+        </div >
     )
 }
 
 export default Weather
+
+
+
+let settimes = function (timeNum) {
+    var hour = new Array(47);
+    var date = new Date();
+    var hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
+    var am_pm = date.getHours() >= 12 ? "pm" : "am";
+    // time conversion function 
+    function nexthourtime(hour, ampm) {
+        let nexthour, nextampm;
+        if (hour === 11) {
+            nexthour = 12;
+            if (ampm === "am") {
+                nextampm = "pm";
+            } else {
+                nextampm = "am";
+            }
+        }
+        else if (hour === 12) {
+            nexthour = 1;
+            if (ampm === "am") {
+                nextampm = "am";
+            } else {
+                nextampm = "pm";
+            }
+        }
+        else {
+            nexthour = hour + 1;
+            nextampm = ampm;
+        }
+        return [nexthour, nextampm];
+    }
+
+    hour[0] = nexthourtime(hours, am_pm);
+    for (let i = 1; i < 48; i++) {
+        hour[i] = nexthourtime(hour[i - 1][0], hour[i - 1][1])
+    }
+    return hour[timeNum];
+};
+
+
+let dayOfWeek = function (dayNum) {
+    var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var d = new Date();
+    var s = (d.getDay() + 1 + dayNum) % 7;
+    return days[s];
+};
