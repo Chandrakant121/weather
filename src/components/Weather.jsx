@@ -6,6 +6,7 @@ import Pressure from './Pressure';
 import RiseSet from './RiseSet';
 import "./Style.css";
 import SunImg from './SunImg';
+import { FaLocationArrow, FaSearch } from 'react-icons/fa';
 
 const Weather = () => {
     const [search, setSearch] = useState("pune");
@@ -93,8 +94,10 @@ const Weather = () => {
                 <div className="box">
                     {/* Search bar */}
                     <div className="input_search">
+                        <FaLocationArrow style={{ margin: 10 }} />
                         <div className="input">
                             <input
+
                                 type="Search"
                                 value={search}
                                 placeholder="Enter name of city"
@@ -102,6 +105,7 @@ const Weather = () => {
                                     setSearch(e.target.value);
                                 }} />
                         </div>
+                        <FaSearch style={{ margin: 10 }} />
                     </div>
                     {
                         !data ?
