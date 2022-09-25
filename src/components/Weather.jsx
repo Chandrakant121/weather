@@ -14,7 +14,7 @@ const Weather = () => {
     const [longitude, setLong] = useState({ longitude: 73.870703 });
     const [current, setCurrent] = useState("");
     const [city, setCity] = useState("");
-    const [hourly, setHourly] = useState("");
+    const [hourly, setHourly] = useState([]);
     const [daily, setDaily] = useState("");
     const [data, setData] = useState([]);
     const [pressure, setPressure] = useState("");
@@ -49,9 +49,8 @@ const Weather = () => {
                 const weatherres = await fetch(uri);
                 const data = await weatherres.json();
 
-                console.log(data)
+                console.log(data.hourly)
                 setData(data.daily);
-                setHourly(data.hourly.temp)
                 setCurrent(data.current);
                 setHourly(data.hourly);
                 setDaily(data.daily);
@@ -130,7 +129,7 @@ const Weather = () => {
                     {/* Add bar chart herer */}
 
                     {/* Hour data */}
-                    {/* <Hourdata data={hourly} /> */}
+                    <Hourdata data={hourly} />
                     {/* Pressure and Humidity */}
                     <Pressure pressure={pressure} humidity={humidity} />
                     {/* sunrise and sunset */}

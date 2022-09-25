@@ -2,7 +2,7 @@ import React from 'react'
 
 
 const Hourdata = ({ data }) => {
-    // console.log(data)
+    console.log(data)
 
     let settimes = function (timeNum) {
         var hour = new Array(47);
