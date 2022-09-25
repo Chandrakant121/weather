@@ -1,6 +1,11 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
+import CurrentTemp from './CurrentTemp';
+import Hourdata from './Hourdata';
+import Pressure from './Pressure';
+import RiseSet from './RiseSet';
 import "./Style.css";
+import SunImg from './SunImg';
 
 const Weather = () => {
     const [search, setSearch] = useState("pune");
@@ -78,18 +83,7 @@ const Weather = () => {
     }
 
 
-    function sunsetrise(unix_timestamp) {
-        var date = new Date(unix_timestamp * 1000);
-        // Hours part from the timestamp
-        var hours = date.getHours();
-        // Minutes part from the timestamp
-        var minutes = "0" + date.getMinutes();
-        // Seconds part from the timestamp
-        // var seconds = "0" + date.getSeconds();
-        // Will display time in 10:30:23 format
-        var formattedTime = hours + ':' + minutes.substr(-2)
-        return formattedTime
-    }
+
 
 
     return (
@@ -110,89 +104,45 @@ const Weather = () => {
                         </div>
                     </div>
                     {
-                        !data ? (<><h2>Loading</h2> <img src="https://www.freeiconspng.com/thumbs/weather-icon-png/weather-icon-png-8.png" alt="" /></>) : (
+                        !data ?
                             <>
-                                <div className="daily">
-                                    <ol>
-                                        {
-                                            data.daily.slice(1).map((y, key) => (
-                                                <div className="card">
-                                                    <div>
-                                                        {dayOfWeek(key)}
-                                                    </div>
-                                                    {y.temp.day}°
-                                                    <span className="celcius">C</span> <br />
-
-                                                    {/* <img src="https://www.freeiconspng.com/thumbs/weather-icon-png/weather-icon-png-8.png" alt="" /> */}
-                                                    <img src={setimg(y.weather[0].main)} alt="" />
-                                                    {y.weather[0].main}
-                                                </div>
-                                            ))}
-                                    </ol>
-                                </div>
-
-
-                                <div className="info">
-                                    <h2 className="temp">{Math.ceil(current?.temp)}°C</h2>
-                                    <img src="https://www.pngmart.com/files/20/Summer-Sun-PNG.png" alt="" />
-                                </div>
-
-
-                                {/* Add bar chart herer */}
-
-
-
-                                <div className="hourly">
-                                    <ol>
-                                        {data.hourly.map((x, key) => (
-                                            <div className="card">
-                                                <b>{Math.ceil(x.temp)}°<span className="celcius">C</span></b>
-                                                <br />
-                                                {settimes(key)}
-                                            </div>
-                                        ))}
-                                    </ol>
-                                </div>
-
-
-                                {/* Pressure and Humidity */}
-                                <div className='p_and_h'>
-                                    <div className='boxboreder'>
-                                        <b>Pressure</b>
-                                        <div> {pressure}{" "}hpa</div>
-                                    </div>
-                                    <div className='boxboreder'>
-                                        <b>Humidity</b>
-                                        <div> {humidity}{" "}%</div>
-                                    </div>
-                                </div>
-
-                                {/* sunrise and sunset */}
-
-                                <div>
-                                    <div className='rise_set'>
-                                        <div>
-                                            <b>Sunrise</b>
-                                            <div>{sunsetrise(sunrise)}{" "}am</div>
-                                        </div>
-                                        <div>
-                                            <b>Sunset</b>
-                                            <div>{sunsetrise(sunset)}{" "}pm</div>
-                                        </div>
-                                    </div>
-
-                                    <div className='rise_set_img'>
-                                        <img src="https://static.vecteezy.com/system/resources/thumbnails/006/923/031/small/day-cycle-line-icon-sun-position-changing-movement-path-sun-clock-with-the-time-of-day-natural-phenomenon-sunshine-sunrise-sunset-illustration-vector.jpg" alt="" />
-                                    </div>
-                                    <div className='imgtime'>
-                                        <div>6{" "}am</div>
-                                        <div>1{" "}pm</div>
-                                        <div>8{" "}pm</div>
-                                    </div>
-                                </div>
-
+                                <h2>Loading</h2>
+                                <img src="https://www.freeiconspng.com/thumbs/weather-icon-png/weather-icon-png-8.png" alt="" />
                             </>
-                        )}
+
+                            :
+                            (
+                                <>
+                                    <div className="daily">
+                                        <ol>
+                                            {
+                                                data.daily.slice(1).map((y, key) => (
+                                                    <div className="card">
+                                                        <div>
+                                                            {dayOfWeek(key)}
+                                                        </div>
+                                                        {y.temp.day}°
+                                                        <span className="celcius">C</span> <br />
+                                                        <img src={setimg(y.weather[0].main)} alt="" />
+                                                        {y.weather[0].main}
+                                                    </div>
+                                                ))}
+                                        </ol>
+                                    </div>
+
+                                    <CurrentTemp temp={current.temp} />
+                                    {/* Add bar chart herer */}
+
+                                    {/* Hour data */}
+                                    <Hourdata data={data} />
+                                    {/* Pressure and Humidity */}
+                                    <Pressure pressure={pressure} humidity={humidity} />
+                                    {/* sunrise and sunset */}
+                                    <RiseSet sunrise={sunrise} sunset={sunset} />
+                                    {/* Added Img  */}
+                                    <SunImg />
+                                </>
+                            )}
 
                 </div>
             </div>
@@ -204,44 +154,6 @@ const Weather = () => {
 export default Weather
 
 
-
-let settimes = function (timeNum) {
-    var hour = new Array(47);
-    var date = new Date();
-    var hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
-    var am_pm = date.getHours() >= 12 ? "pm" : "am";
-    // time conversion function 
-    function nexthourtime(hour, ampm) {
-        let nexthour, nextampm;
-        if (hour === 11) {
-            nexthour = 12;
-            if (ampm === "am") {
-                nextampm = "pm";
-            } else {
-                nextampm = "am";
-            }
-        }
-        else if (hour === 12) {
-            nexthour = 1;
-            if (ampm === "am") {
-                nextampm = "am";
-            } else {
-                nextampm = "pm";
-            }
-        }
-        else {
-            nexthour = hour + 1;
-            nextampm = ampm;
-        }
-        return [nexthour, nextampm];
-    }
-
-    hour[0] = nexthourtime(hours, am_pm);
-    for (let i = 1; i < 48; i++) {
-        hour[i] = nexthourtime(hour[i - 1][0], hour[i - 1][1])
-    }
-    return hour[timeNum];
-};
 
 
 let dayOfWeek = function (dayNum) {
