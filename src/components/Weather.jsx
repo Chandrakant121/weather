@@ -40,7 +40,8 @@ const Weather = () => {
             // const res = await fetch(olduri);
             // const alldata = await res.json()
             var alldata = await fetch(olduri).then((res) => res.json()).catch((err) => console.log(err))
-            console.log(alldata.coord)
+            console.log(alldata)
+            setDaily(alldata.main);
 
             if (alldata) {
                 var { lon, lat } = alldata?.coord;
@@ -49,15 +50,16 @@ const Weather = () => {
                 const weatherres = await fetch(uri);
                 const data = await weatherres.json();
 
-                console.log(data.hourly)
+
+                setCurrent(alldata.main.temp_max);
+
+                console.log(alldata)
                 setData(data.daily);
-                setCurrent(data.current);
                 setHourly(data.hourly);
-                setDaily(data.daily);
-                setHumidity(data.current.humidity)
-                setPressure(data.current.pressure)
-                setSunrise(data.current.sunrise)
-                setSunset(data.current.sunset)
+                setHumidity(alldata.main.humidity)
+                setPressure(alldata.main.pressure)
+                setSunrise(alldata.sys.sunrise)
+                setSunset(alldata.sys.sunset)
             } else {
                 // setData([...data]);
                 alert("enter proper city name")
@@ -116,7 +118,7 @@ const Weather = () => {
                                             {dayOfWeek(key)}
                                         </div>
 
-                                        {y.temp.day}°
+                                        {y.temp.day + 20}°
                                         <span className="celcius">C</span> <br />
                                         <img src={setimg(y.weather[0].main)} alt="" />
                                         {y.weather[0].main}
@@ -125,7 +127,7 @@ const Weather = () => {
                         </ol>
                     </div>
 
-                    <CurrentTemp temp={current.temp} />
+                    <CurrentTemp temp={current} />
                     {/* Add bar chart herer */}
 
                     {/* Hour data */}
