@@ -39,8 +39,9 @@ const Weather = () => {
             // const key = "4b662484c866d9490cda4b971b86dea4" 
             const API_KEY = "4b662484c866d9490cda4b971b86dea4";
             const olduri = `http://api.positionstack.com/v1/forward?access_key=fab80d93ef21989e45e301fbf8f51ca2&query=${search}`;
-            const res = await fetch(olduri);
-            const alldata = await res.json()
+            // const res = await fetch(olduri);
+            // const alldata = await res.json()
+            var alldata =await fetch(olduri).then((res) => res.json()).catch((err) => console.log(err))
             console.log(alldata)
 
             if (alldata?.data && alldata.data.length > 0) {
