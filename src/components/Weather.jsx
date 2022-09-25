@@ -37,11 +37,11 @@ const Weather = () => {
     useEffect(() => {
         const fetchApi = async () => {
             // const key = "4b662484c866d9490cda4b971b86dea4" 
-            const API_KEY = "2935c91cbd3fb88da8e19646f93fbbbd";
-            const uri = `http://api.positionstack.com/v1/forward?access_key=fab80d93ef21989e45e301fbf8f51ca2&query=${search}`;
+            const API_KEY = "4b662484c866d9490cda4b971b86dea4";
+            const olduri = `http://api.positionstack.com/v1/forward?access_key=fab80d93ef21989e45e301fbf8f51ca2&query=${search}`;
 
 
-            const res = await fetch(uri);
+            const res = await fetch(olduri);
             const alldata = await res.json()
 
             if (alldata?.data && alldata.data.length > 0) {
@@ -53,6 +53,7 @@ const Weather = () => {
 
                 console.log(data)
                 setData(data);
+                // const { daily, hourly, current } = data;
                 setCurrent(data.current);
                 setHourly(data.hourly);
                 setDaily(data.daily);
