@@ -47,7 +47,7 @@ const Hourdata = ({ data }) => {
 
             <ol>
                 {
-                    data.slice[0].map((x, key) => (
+                    data.map((x, key) => (
                         <div className="card" key={key}>
                             <b>{Math.ceil(x.temp)}°<span className="celcius">C</span></b>
                             <br />

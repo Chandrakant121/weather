@@ -9,7 +9,7 @@ import SunImg from './SunImg';
 import { FaLocationArrow, FaSearch } from 'react-icons/fa';
 
 const Weather = () => {
-    const [search, setSearch] = useState("pune");
+    const [search, setSearch] = useState("");
     const [latitude, setLat] = useState({ latitude: 18.519479 });
     const [longitude, setLong] = useState({ longitude: 73.870703 });
     const [current, setCurrent] = useState("");
@@ -29,31 +29,29 @@ const Weather = () => {
             setLat(position.coords.latitude);
             setLong(position.coords.longitude);
         });
-        // console.log("Latitude is:", latitude)
-        // console.log("Longitude is:", longitude)
     }, [latitude, longitude]);
 
-
     useEffect(() => {
+
         const fetchApi = async () => {
             // const key = "4b662484c866d9490cda4b971b86dea4" 
-            const API_KEY = "4b662484c866d9490cda4b971b86dea4";
-            const olduri = `http://api.positionstack.com/v1/forward?access_key=fab80d93ef21989e45e301fbf8f51ca2&query=${search}`;
+            // const API_KEY = "4b662484c866d9490cda4b971b86dea4";
+            const olduri = `https://api.openweathermap.org/data/2.5/weather?q=${search}&appid=4b662484c866d9490cda4b971b86dea4&units=metric`;
             // const res = await fetch(olduri);
             // const alldata = await res.json()
-            var alldata =await fetch(olduri).then((res) => res.json()).catch((err) => console.log(err))
-            console.log(alldata)
+            var alldata = await fetch(olduri).then((res) => res.json()).catch((err) => console.log(err))
+            console.log(alldata.coord)
 
-            if (alldata?.data && alldata.data.length > 0) {
-                const { latitude, longitude, name = "no data" } = alldata?.data[0];
-                setCity(name);
-                const uri = `https://api.openweathermap.org/data/2.5/onecall?units=metric&lat=${latitude}&lon=${longitude}&exclude=minutely,alerts&appid=${API_KEY}`;
+            if (alldata) {
+                var { lon, lat } = alldata?.coord;
+                // setCity(name);
+                const uri = `https://api.openweathermap.org/data/2.5/onecall?lat=${lon}&lon=${lat}&appid=4b662484c866d9490cda4b971b86dea4&units=metric`;
                 const weatherres = await fetch(uri);
                 const data = await weatherres.json();
 
-                console.log(data.hourly[0].temp)
+                console.log(data)
                 setData(data.daily);
-                // setHourly(data.hourly.temp)
+                setHourly(data.hourly.temp)
                 setCurrent(data.current);
                 setHourly(data.hourly);
                 setDaily(data.daily);
@@ -62,7 +60,9 @@ const Weather = () => {
                 setSunrise(data.current.sunrise)
                 setSunset(data.current.sunset)
             } else {
-                setData([...data]);
+                // setData([...data]);
+                alert("enter proper city name")
+
             }
         };
         fetchApi();
