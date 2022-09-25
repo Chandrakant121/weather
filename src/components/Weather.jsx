@@ -121,10 +121,11 @@ const Weather = () => {
                                         <ol>
                                             {
                                                 data.daily.slice(1).map((y, key) => (
-                                                    <div className="card">
+                                                    <div className="card" key={key}>
                                                         <div>
                                                             {dayOfWeek(key)}
                                                         </div>
+
                                                         {y.temp.day}°
                                                         <span className="celcius">C</span> <br />
                                                         <img src={setimg(y.weather[0].main)} alt="" />
