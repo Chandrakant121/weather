@@ -10,8 +10,8 @@ import { FaLocationArrow, FaSearch } from 'react-icons/fa';
 
 const Weather = () => {
     const [search, setSearch] = useState("pune");
-    const [latitude, setLat] = useState([]);
-    const [longitude, setLong] = useState([]);
+    const [latitude, setLat] = useState({ latitude: 18.519479 });
+    const [longitude, setLong] = useState({ longitude: 73.870703 });
     const [current, setCurrent] = useState("");
     const [city, setCity] = useState("");
     const [hourly, setHourly] = useState("");
@@ -41,9 +41,10 @@ const Weather = () => {
             const olduri = `http://api.positionstack.com/v1/forward?access_key=fab80d93ef21989e45e301fbf8f51ca2&query=${search}`;
             const res = await fetch(olduri);
             const alldata = await res.json()
+            console.log(alldata)
 
             if (alldata?.data && alldata.data.length > 0) {
-                const { latitude = 0, longitude, name = "no data" } = alldata?.data[0];
+                const { latitude, longitude, name = "no data" } = alldata?.data[0];
                 setCity(name);
                 const uri = `https://api.openweathermap.org/data/2.5/onecall?units=metric&lat=${latitude}&lon=${longitude}&exclude=minutely,alerts&appid=${API_KEY}`;
                 const weatherres = await fetch(uri);
