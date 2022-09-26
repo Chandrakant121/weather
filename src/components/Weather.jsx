@@ -113,13 +113,7 @@ const Weather = () => {
                         <ol>
                             {
                                 data.map((y, key) => (
-                                    <div className="card" key={key}>
-                                        <div>
-                                            {dayOfWeek(key)}
-                                        </div>
-
-                                        {y.temp.day + 20}°
-                                        <span className="celcius">C</span> <br />
+                                    <div className="card" key={key}><div> {dayOfWeek(key)}  </div>{Math.round(y.temp.day + 20)}°<span className="celcius">C</span> <br />
                                         <img src={setimg(y.weather[0].main)} alt="" />
                                         {y.weather[0].main}
                                     </div>
